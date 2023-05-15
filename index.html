@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mel's Pokedex</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css"
+    />
+    <script type="text/javascript" src="src/commands.js"></script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=VT323&display=swap");
+      * {
+        font-family: "VT323", monospace;
+      }
+      body {
+        background-color: #f2f2f2;
+        color: #222;
+      }
+      h1 {
+        font-size: 32px;
+      }
+      h4 {
+        font-size: 18px;
+      }
+      .pokemon-image {
+        display: block;
+        margin: 0 auto;
+        max-width: 100%;
+        width: 200px;
+      }
+      .card-header {
+        background-color: #f85888;
+        color: #fff;
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        text-transform: capitalize;
+      }
+      .card-body .type {
+        border-radius: 8px;
+        display: inline-block;
+        margin-right: 10px;
+        padding: 4px 8px;
+        text-align: center;
+        text-transform: capitalize;
+        width: 80px;
+      }
+      .card-body .type.grass {
+        background-color: #78c850;
+      }
+      .card-body .type.flying {
+        background-color: #c2d4d0;
+      }
+      .card-body .type.fire {
+        background-color: #f08030;
+      }
+      .card-body .type.water {
+        background-color: #6890f0;
+      }
+      .card-body .type.bug {
+        background-color: #a8b820;
+      }
+      .card-body .type.normal {
+        background-color: #a8a878;
+      }
+      .card-body .type.poison {
+        background-color: #a040a0;
+      }
+      .card-body .type.electric {
+        background-color: #f8d030;
+      }
+      .card-body .type.ground {
+        background-color: #e0c068;
+      }
+      .card-body .type.fairy {
+        background-color: #ee99ac;
+      }
+      .card-body .type.fighting {
+        background-color: #c03028;
+      }
+      .card-body .type.psychic {
+        background-color: #f85888;
+      }
+      .card-body .type.rock {
+        background-color: #b8a038;
+      }
+      .card-body .type.ghost {
+        background-color: #705898;
+      }
+      .card-body .type.ice {
+        background-color: #98d8d8;
+      }
+      .card-body .type.dragon {
+        background-color: #7038f8;
+      }
+      .card-body .type.steel {
+        background-color: #b8b8d0;
+      }
+      .card-body .type.dark {
+        background-color: #705848;
+      }
+      .footer {
+        background-color: #222;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+      }
+      .footer a {
+        color: #fff;
+        text-decoration: none;
+      }
+      @media (min-width: 576px) {
+        .pokemon-image {
+          max-width: 50%;
+          width: auto;
+        }
+        .card {
+          margin: 0 auto;
+          margin-top: 20px;
+          max-width: 500px;
+          width: 100%;
+        }
+        h1 {
+          font-size: 48px;
+        }
+        h4 {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="text-center bg-dark text-white py-2">Mel's Pokedex</h1>
+    <div
+      class="container my-4 d-flex flex-column justify-content-center align-items-center"
+    >
+      <div class="form-group">
+        <input
+          type="text"
+          class="form-control"
+          id="inputPokemon"
+          aria-describedby="pokemonHelp"
+          placeholder="Enter pokemon"
+        />
+        <small id="pokemonHelp" class="form-text text-muted"
+          >Or leave empty for a random pokemon!</small
+        >
+      </div>
+      <button class="btn btn-success mt-3" id="submitBtn">
+        Submit
+      </button>
+    </div>
+    <div class="container my-4">
+      <div class="row">
+        <div class="col-12 col-md-6 offset-md-3">
+          <div class="card">
+            <div class="card-header" id="pokeIdName">
+              #1 BULBASAUR
+            </div>
+            <div class="card-body">
+              <img
+                src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+                alt="Bulbasaur"
+                class="pokemon-image"
+                id="pokeSprite"
+              />
+
+              <section id="description" class="container">
+                <p id="pokeDesc">
+                  There is a plant seed on its back right from the day this
+                  Pokemon is born. The seed slowly grows larger.
+                </p>
+              </section>
+
+              <section id="types" class="container">
+                <h4>Type:</h4>
+                <div id="outputType">
+                  <span class="type grass">Grass</span>
+                  <span class="type poison">Poison</span>
+                </div>
+              </section>
+
+              <section id="weakness" class="container my-4">
+                <h4>Weaknesses:</h4>
+                <div id="outputWeaknesses">
+                  <span class="type fire">Fire</span>
+                  <span class="type psychic">Psychic</span>
+                  <span class="type ice">Ice</span>
+                  <span class="type flying"> Flying</span>
+                </div>
+              </section>
+
+              <section id="stats" class="my-4 container bg-warning p-2 rounded">
+                <h4>Base Stats:</h4>
+                <div class="table-responsive">
+                  <table
+                    class="table table-borderless table-sm base-stats text-center"
+                  >
+                    <thead>
+                      <tr>
+                        <th scope="col">HP</th>
+                        <th scope="col">Atk</th>
+                        <th scope="col">Def</th>
+                        <th scope="col">SpAtk</th>
+                        <th scope="col">SpDef</th>
+                        <th scope="col">Spd</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr id="outputStats">
+                        <td><span class="base-stat">45</span></td>
+                        <td>
+                          <span class="base-stat">49</span>
+                        </td>
+                        <td>
+                          <span class="base-stat">49</span>
+                        </td>
+                        <td>
+                          <span class="base-stat">65</span>
+                        </td>
+                        <td>
+                          <span class="base-stat">65</span>
+                        </td>
+                        <td>
+                          <span class="base-stat">45</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <div class="stat-bar">
+                            <div class="stat-value" style="width: 25%;"></div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="stat-bar">
+                            <div class="stat-value" style="width: 31%;"></div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="stat-bar">
+                            <div class="stat-value" style="width: 31%;"></div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="stat-bar">
+                            <div class="stat-value" style="width: 44%;"></div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="stat-bar">
+                            <div class="stat-value" style="width: 44%;"></div>
+                          </div>
+                        </td>
+                        <td>
+                          <div class="stat-bar">
+                            <div class="stat-value" style="width: 25%;"></div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+
+              <section id="abilities" class="my-4 container">
+                <h4>Abilities:</h4>
+                <ul id="abilitiesOutput">
+                  <li>Overgrow</li>
+                  <li>Chlorophyll (hidden ability)</li>
+                </ul>
+              </section>
+
+              <section id="information" class="container my-4">
+                <ul
+                  class="list-unstyled d-flex justify-content-between text-center"
+                >
+                  <li class="d-flex flex-column bg-info p-2 rounded">
+                    <strong>Height</strong>
+                    <span class="pokemon-info" id="pokeHeight">7"</span>
+                  </li>
+                  <li class="d-flex flex-column bg-info p-2 rounded">
+                    <strong>Weight</strong>
+                    <span class="pokemon-info" id="pokeWeight">69</span>
+                  </li>
+                  <li class="d-flex flex-column bg-info p-2 rounded">
+                    <strong>Catch %</strong>
+                    <span class="pokemon-info" id="pokeCatch">45</span>
+                  </li>
+                </ul>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      Powered by <a href="https://pokeapi.co/">PokeAPI</a>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+  </body>
+</html>
